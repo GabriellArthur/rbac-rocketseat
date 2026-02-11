@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import { env } from "@saas/env";
 import type { FastifyInstance } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import { UnauthorizedError } from "../_errors/unauthorized-error";
-import { env } from "@saas/env";
 
 export async function authenticateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post('/sessions/github', {
@@ -15,7 +15,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       }),
       response: {
         201: z.object({
-          access_token: z.string(),
+          token: z.string(),
         }),
       },
     }
@@ -103,7 +103,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
     });
 
     return reply.status(201).send({
-      access_token: token,
+      token,
     });
   });
 }

@@ -7,7 +7,7 @@
     "dev": "bun env:load tsx watch src/http/server.ts",
     "db:migrate": "bun env:load prisma migrate dev",
     "db:studio": "bun env:load prisma studio",
-    "env:load": "dotenv -e ../../.env --"
+    "env:load": "dotenv -e ../../packages/env/.env --"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",

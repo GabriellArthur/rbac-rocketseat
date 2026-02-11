@@ -1,19 +1,19 @@
-import "./globals.css";
+import './globals.css'
 
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Create Next App",
-};
+  title: 'Create Next App',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning className="dark">
       <body>{children}</body>
     </html>
-  );
+  )
 }

@@ -1,27 +1,22 @@
 import type { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
-import { BadRequestError } from "./routes/_errors/bad-request-error";
-import { UnauthorizedError } from "./routes/_errors/unauthorized-error";
+
+type ErrorWithStatusCode = Error & { statusCode?: number };
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
 
-export const errorHandler: FastifyErrorHandler = ( error, request, reply) => {
-  if (error instanceof  ZodError) {
+export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
+  if (error instanceof ZodError) {
     return reply.status(400).send({
       error: 'Validation error',
       errors: error.flatten().fieldErrors,
     });
   }
 
-  if (error instanceof BadRequestError) {
-    return reply.status(400).send({
-      error: error.message,
-    });
-  }
-
-  if (error instanceof UnauthorizedError) {
-    return reply.status(401).send({
-      error: error.message,
+  const err = error as ErrorWithStatusCode;
+  if (typeof err.statusCode === 'number' && err.statusCode >= 400 && err.statusCode < 500) {
+    return reply.status(err.statusCode).send({
+      error: err.message,
     });
   }
 

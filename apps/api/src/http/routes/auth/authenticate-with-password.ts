@@ -17,7 +17,7 @@ export async function authenticateWithPassword(app: FastifyInstance) {
       }),
       response: {
         201: z.object({
-          access_token: z.string(),
+          token: z.string(),
         }),
       },
     }
@@ -30,7 +30,7 @@ export async function authenticateWithPassword(app: FastifyInstance) {
       },
     });
 
-    if (!userFromEmail) {
+    if (userFromEmail === null) {
       throw new UnauthorizedError('Invalid credentials');
     }
 
@@ -53,7 +53,7 @@ export async function authenticateWithPassword(app: FastifyInstance) {
     });
 
     return reply.status(201).send({
-      access_token: token,
+      token,
     });
   });
 }
