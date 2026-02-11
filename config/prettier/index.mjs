@@ -1,8 +1,11 @@
 /** @typedef {import('prettier').Config} PrettierConfig */
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
 
 /** @type {PrettierConfig} */
 const config = {
-  plugins: ['prettier-plugin-tailwindcss'],
+  plugins: [require.resolve('prettier-plugin-tailwindcss')],
   printWidth: 80,
   tabWidth: 2,
   useTabs: false,
