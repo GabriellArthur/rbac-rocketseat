@@ -1,8 +1,11 @@
-import rocketseatIcon from '@/assets/rocketseat-icon.svg'
-import { ability } from '@/auth/auth'
 import { Slash } from 'lucide-react'
 import Image from 'next/image'
+
+import rocketseatIcon from '@/assets/rocketseat-icon.svg'
+import { ability } from '@/auth/auth'
+
 import { OrganizationSwitcher } from './organization-switcher'
+import { PendingInvites } from './pending-invites'
 import { ProfileButton } from './profile-button'
 import { ProjectSwitcher } from './project-switcher'
 import { ThemeSwitcher } from './theme/theme-switcher'
@@ -16,8 +19,8 @@ export async function Header() {
       <div className="flex items-center gap-3">
         <Image
           src={rocketseatIcon}
-          alt="RocketSeat"
           className="size-6 dark:invert"
+          alt="Rocketseat"
         />
 
         <Slash className="text-border size-3 -rotate-[24deg]" />
@@ -33,6 +36,7 @@ export async function Header() {
       </div>
 
       <div className="flex items-center gap-4">
+        <PendingInvites />
         <ThemeSwitcher />
         <Separator orientation="vertical" className="h-5" />
         <ProfileButton />

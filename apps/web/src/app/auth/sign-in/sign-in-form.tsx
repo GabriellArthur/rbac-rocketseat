@@ -1,24 +1,26 @@
 'use client'
 
+import { AlertTriangle, Loader2 } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import githubIcon from '@/assets/github-icon.svg'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { AlertTriangle, Loader2 } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useFormState } from '@/hooks/use-form-state'
+
+import { signInWithGithub } from '../actions'
 import { signInWithEmailAndPassword } from './actions'
 
-import githubIcon from '@/assets/github-icon.svg'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { useFormState } from '@/hooks/use-form-state'
-import { useRouter } from 'next/navigation'
-import { signInWithGithub } from '../actions'
-
-export default function SignInForm() {
+export function SignInForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const [handleSubmit, { success, message, errors }, isPending] = useFormState(
+  const [handleSubmit, { errors, message, success }, isPending] = useFormState(
     signInWithEmailAndPassword,
     () => {
       router.push('/')
@@ -39,8 +41,13 @@ export default function SignInForm() {
         )}
 
         <div className="space-y-1">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" type="email" id="email" />
+          <Label htmlFor="email">E-mail</Label>
+          <Input
+            name="email"
+            type="email"
+            id="email"
+            defaultValue={searchParams.get('email') ?? ''}
+          />
 
           {errors?.email && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -61,13 +68,13 @@ export default function SignInForm() {
 
           <Link
             href="/auth/forgot-password"
-            className="text-muted-foreground text-sm font-medium hover:underline"
+            className="text-foreground text-xs font-medium hover:underline"
           >
-            Forgot password?
+            Forgot your password?
           </Link>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button className="w-full" type="submit" disabled={isPending}>
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
@@ -75,16 +82,17 @@ export default function SignInForm() {
           )}
         </Button>
 
-        <Button variant="link" className="w-full" size="sm" asChild>
+        <Button className="w-full" variant="link" size="sm" asChild>
           <Link href="/auth/sign-up">Create new account</Link>
         </Button>
       </form>
+
       <Separator />
 
       <form action={signInWithGithub}>
-        <Button type="submit" variant="outline" className="w-full">
-          <Image src={githubIcon} className="mr-2 size-4 dark:invert" alt="" />
-          Sign in with Github
+        <Button type="submit" className="w-full" variant="outline">
+          <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
+          Sign in with GitHub
         </Button>
       </form>
     </div>
