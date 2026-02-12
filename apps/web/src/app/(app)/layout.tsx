@@ -4,6 +4,7 @@ import { isAuthenticated } from '@/auth/auth'
 
 export default function AppLayout({
   children,
+  // INTERCEPTOR ROUTES WITH PARALLEL ROUTES
   sheet,
 }: Readonly<{
   children: React.ReactNode
@@ -14,9 +15,9 @@ export default function AppLayout({
   }
 
   return (
-    <div className="space-y-4 py-4">
+    <>
       {children}
       {sheet}
-    </div>
+    </>
   )
 }
