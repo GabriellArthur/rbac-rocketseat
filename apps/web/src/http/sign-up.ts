@@ -1,5 +1,6 @@
-import { HTTPError } from 'ky';
-import { api } from './api-client';
+import { HTTPError } from 'ky'
+
+import { api } from './api-client'
 
 interface SignUpRequest {
   email: string
@@ -11,8 +12,8 @@ type SignUpResponse = void
 
 export class SignUpError extends Error {
   constructor(message?: string) {
-    super(message ?? 'Sign up failed');
-    this.name = 'SignUpError';
+    super(message ?? 'Sign up failed')
+    this.name = 'SignUpError'
   }
 }
 
@@ -22,14 +23,13 @@ export async function signUp({
   password,
 }: SignUpRequest): Promise<SignUpResponse> {
   try {
-    await api
-      .post('users', {
-        json: {
-          name,
-          email,
-          password,
-        },
-      })
+    await api.post('users', {
+      json: {
+        name,
+        email,
+        password,
+      },
+    })
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()

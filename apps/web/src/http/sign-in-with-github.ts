@@ -1,5 +1,6 @@
-import { HTTPError } from 'ky';
-import { api } from './api-client';
+import { HTTPError } from 'ky'
+
+import { api } from './api-client'
 
 interface SignInWithGithubRequest {
   code: string
@@ -11,21 +12,19 @@ interface SignInWithGithubResponse {
 
 export class SignInWithGithubError extends Error {
   constructor(message?: string) {
-    super(message ?? 'Sign in with password failed');
-    this.name = 'SignInWithGithubError';
+    super(message ?? 'Sign in with password failed')
+    this.name = 'SignInWithGithubError'
   }
 }
 
-export async function signInWithGithub({
-  code,
-}: SignInWithGithubRequest) {
+export async function signInWithGithub({ code }: SignInWithGithubRequest) {
   try {
     const result = await api
-    .post('sessions/github', {
-      json: {
-        code,
-      },
-    })
+      .post('sessions/github', {
+        json: {
+          code,
+        },
+      })
       .json<SignInWithGithubResponse>()
 
     return result
@@ -35,6 +34,8 @@ export async function signInWithGithub({
       throw new SignInWithGithubError(message)
     }
 
-    throw new SignInWithGithubError('Unexpected error, try again in a few minutes.')
+    throw new SignInWithGithubError(
+      'Unexpected error, try again in a few minutes.',
+    )
   }
 }

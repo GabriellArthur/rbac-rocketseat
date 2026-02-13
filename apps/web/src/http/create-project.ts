@@ -1,4 +1,5 @@
 import { HTTPError } from 'ky'
+
 import { api } from './api-client'
 
 interface CreateProjectRequest {
@@ -41,7 +42,7 @@ export async function createProject({
     }
 
     throw new CreateProjectError(
-      'Unexpected error, try again in a few minutes.'
+      'Unexpected error, try again in a few minutes.',
     )
   }
 }

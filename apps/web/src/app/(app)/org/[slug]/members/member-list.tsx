@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getMembers } from '@/http/get-members'
 import { getMembership } from '@/http/get-membership'
 import { getOrganization } from '@/http/get-organization'
+
 import { removeMemberAction } from './actions'
 import { UpdateMemberRoleSelect } from './update-member-role-select'
 
@@ -69,7 +70,7 @@ export async function MemberList() {
                     <div className="flex items-center justify-end gap-2">
                       {permissions?.can(
                         'transfer_ownership',
-                        authOrganization
+                        authOrganization,
                       ) && (
                         <Button size="sm" variant="ghost">
                           <ArrowLeftRight className="mr-2 size-4" />

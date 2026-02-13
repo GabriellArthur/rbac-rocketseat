@@ -9,9 +9,6 @@
     "@saas/eslint-config": "workspace:*",
     "@saas/tsconfig": "workspace:*"
   },
-  "eslintConfig": {
-    "extends": ["@saas/eslint-config/library"]
-  },
   "prettier": "@saas/prettier",
   "dependencies": {
     "@casl/ability": "^6.8.0",

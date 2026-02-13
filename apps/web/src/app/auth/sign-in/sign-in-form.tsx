@@ -24,7 +24,7 @@ export function SignInForm() {
     signInWithEmailAndPassword,
     () => {
       router.push('/')
-    }
+    },
   )
 
   return (

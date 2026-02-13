@@ -1,10 +1,11 @@
 'use server'
 
-import { acceptInvite } from '@/http/accept-invite'
-import { signInWithPassword } from '@/http/sign-in-with-password'
 import { HTTPError } from 'ky'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
+
+import { acceptInvite } from '@/http/accept-invite'
+import { signInWithPassword } from '@/http/sign-in-with-password'
 
 const signInWithEmailAndPasswordSchema = z.object({
   email: z
@@ -15,7 +16,7 @@ const signInWithEmailAndPasswordSchema = z.object({
 
 export async function signInWithEmailAndPassword(data: FormData) {
   const result = signInWithEmailAndPasswordSchema.safeParse(
-    Object.fromEntries(data)
+    Object.fromEntries(data),
   )
 
   if (!result.success) {
@@ -57,7 +58,7 @@ export async function signInWithEmailAndPassword(data: FormData) {
 
       return {
         success: false,
-        message: message,
+        message,
         errors: null,
       }
     }

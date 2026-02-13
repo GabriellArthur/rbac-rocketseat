@@ -1,5 +1,6 @@
-import { HTTPError } from 'ky';
-import { api } from './api-client';
+import { HTTPError } from 'ky'
+
+import { api } from './api-client'
 
 interface CreateOrganizationRequest {
   name: string
@@ -13,8 +14,8 @@ interface CreateOrganizationResponse {
 
 export class CreateOrganizationError extends Error {
   constructor(message?: string) {
-    super(message ?? 'Sign in with password failed');
-    this.name = 'CreateOrganizationError';
+    super(message ?? 'Sign in with password failed')
+    this.name = 'CreateOrganizationError'
   }
 }
 
@@ -41,6 +42,8 @@ export async function createOrganization({
       throw new CreateOrganizationError(message)
     }
 
-    throw new CreateOrganizationError('Unexpected error, try again in a few minutes.')
+    throw new CreateOrganizationError(
+      'Unexpected error, try again in a few minutes.',
+    )
   }
 }

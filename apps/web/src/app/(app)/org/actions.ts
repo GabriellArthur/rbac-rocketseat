@@ -1,11 +1,12 @@
 'use server'
 
-import { getCurrentOrg } from '@/auth/auth'
-import { createOrganization } from '@/http/create-organization'
-import { updateOrganization } from '@/http/update-organization'
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
+
+import { getCurrentOrg } from '@/auth/auth'
+import { createOrganization } from '@/http/create-organization'
+import { updateOrganization } from '@/http/update-organization'
 
 const organizationSchema = z
   .object({
@@ -27,7 +28,7 @@ const organizationSchema = z
         },
         {
           message: 'Please, enter a valid domain.',
-        }
+        },
       ),
     shouldAttachUsersByDomain: z
       .union([z.literal('on'), z.literal('off'), z.boolean()])
@@ -44,7 +45,7 @@ const organizationSchema = z
     {
       message: 'Domain is required when auto-join is enabled.',
       path: ['domain'],
-    }
+    },
   )
 
 export type OrganizationSchema = z.infer<typeof organizationSchema>
@@ -78,7 +79,7 @@ export async function createOrganizationAction(data: FormData) {
 
       return {
         success: false,
-        message: message,
+        message,
         errors: null,
       }
     }
@@ -128,7 +129,7 @@ export async function updateOrganizationAction(data: FormData) {
 
       return {
         success: false,
-        message: message,
+        message,
         errors: null,
       }
     }

@@ -1,7 +1,9 @@
-import { prisma } from "@/lib/prisma";
-import type { FastifyInstance } from "fastify";
-import fastifyPlugin from "fastify-plugin";
-import { UnauthorizedError } from "../routes/_errors/unauthorized-error";
+import type { FastifyInstance } from 'fastify'
+import fastifyPlugin from 'fastify-plugin'
+
+import { prisma } from '@/lib/prisma'
+
+import { UnauthorizedError } from '../routes/_errors/unauthorized-error'
 
 export const auth = fastifyPlugin(async (app: FastifyInstance) => {
   app.addHook('preHandler', async (request) => {
@@ -9,14 +11,14 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       try {
         const { sub } = await request.jwtVerify<{ sub: string }>()
 
-        return sub;
+        return sub
       } catch (error) {
-        throw new UnauthorizedError('Invalid token');
+        throw new UnauthorizedError('Invalid token')
       }
     }
 
     request.getUserMembership = async (slug: string) => {
-      const userId = await request.getCurrentUserId();
+      const userId = await request.getCurrentUserId()
       const member = await prisma.member.findFirst({
         where: {
           userId,
@@ -26,11 +28,11 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
         },
         include: {
           organization: true,
-        }
-      });
+        },
+      })
 
       if (!member) {
-        throw new UnauthorizedError('You are not a member of this organization');
+        throw new UnauthorizedError('You are not a member of this organization')
       }
 
       const { organization, ...membership } = member
@@ -38,7 +40,7 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       return {
         organization,
         membership,
-      };
+      }
     }
-  });
+  })
 })

@@ -1,64 +1,76 @@
-import { auth } from "@/http/middlewares/auth";
-import { prisma } from "@/lib/prisma";
-import { rolesSchema } from "@saas/auth";
-import type { FastifyInstance } from "fastify";
-import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
+import { rolesSchema } from '@saas/auth'
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { z } from 'zod'
+
+import { auth } from '@/http/middlewares/auth'
+import { prisma } from '@/lib/prisma'
 
 export async function getOrganizations(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().register(auth).get('/organizations', {
-    schema: {
-      tags: ['organizations'],
-      summary: 'Get all organizations with the current user membership',
-      security: [{ bearerAuth: [] }],
-      response: {
-        200: z.object({
-          organizations: z.array(z.object({
-            id: z.string().uuid(),
-            name: z.string(),
-            slug: z.string(),
-            avatarUrl: z.string().url().nullable(),
-            role: rolesSchema,
-          })),
-        }),
-      },
-    }
-  }, async (request, reply) => {
-    const userId = await request.getCurrentUserId();
-
-    const organizations = await prisma.organization.findMany({
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        avatarUrl: true,
-        members: {
-          select: {
-            role: true,
-          },
-          where: {
-            userId,
-          }
-        }
-      },
-      where: {
-        members: {
-          some: {
-            userId,
+  app
+    .withTypeProvider<ZodTypeProvider>()
+    .register(auth)
+    .get(
+      '/organizations',
+      {
+        schema: {
+          tags: ['organizations'],
+          summary: 'Get all organizations with the current user membership',
+          security: [{ bearerAuth: [] }],
+          response: {
+            200: z.object({
+              organizations: z.array(
+                z.object({
+                  id: z.string().uuid(),
+                  name: z.string(),
+                  slug: z.string(),
+                  avatarUrl: z.string().url().nullable(),
+                  role: rolesSchema,
+                }),
+              ),
+            }),
           },
         },
       },
-    });
+      async (request, reply) => {
+        const userId = await request.getCurrentUserId()
 
-    const organizationsWithUserRole = organizations.map(({ members, ...org }) => {
-      return {
-        ...org,
-        role: members[0].role,
-      }
-    });
+        const organizations = await prisma.organization.findMany({
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            avatarUrl: true,
+            members: {
+              select: {
+                role: true,
+              },
+              where: {
+                userId,
+              },
+            },
+          },
+          where: {
+            members: {
+              some: {
+                userId,
+              },
+            },
+          },
+        })
 
-    return reply.status(200).send({
-      organizations: organizationsWithUserRole,
-    });
-  });
+        const organizationsWithUserRole = organizations.map(
+          ({ members, ...org }) => {
+            return {
+              ...org,
+              role: members[0].role,
+            }
+          },
+        )
+
+        return reply.status(200).send({
+          organizations: organizationsWithUserRole,
+        })
+      },
+    )
 }

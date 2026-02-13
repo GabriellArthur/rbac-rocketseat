@@ -1,25 +1,30 @@
 'use server'
 
-import { signUp } from '@/http/sign-up'
 import { HTTPError } from 'ky'
 import { z } from 'zod'
 
-const signUpSchema = z.object({
-  name: z.string().refine(value => value.split(' ').length > 1, { message: 'Please, provide your full name.' }),
-  email: z
-    .string()
-    .email({ message: 'Please, provide a valid e-mail address.' }),
-  password: z.string().min(6, { message: 'Password should have at least 6 characters.' }),
-  password_confirmation: z.string(),
-}).refine((data) => data.password === data.password_confirmation, {
-  message: 'Passwords do not match.',
-  path: ['password_confirmation'],
-})
+import { signUp } from '@/http/sign-up'
+
+const signUpSchema = z
+  .object({
+    name: z.string().refine((value) => value.split(' ').length > 1, {
+      message: 'Please, provide your full name.',
+    }),
+    email: z
+      .string()
+      .email({ message: 'Please, provide a valid e-mail address.' }),
+    password: z
+      .string()
+      .min(6, { message: 'Password should have at least 6 characters.' }),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: 'Passwords do not match.',
+    path: ['password_confirmation'],
+  })
 
 export async function signUpAction(data: FormData) {
-  const result = signUpSchema.safeParse(
-    Object.fromEntries(data)
-  )
+  const result = signUpSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
@@ -45,7 +50,7 @@ export async function signUpAction(data: FormData) {
 
       return {
         success: false,
-        message: message,
+        message,
         errors: null,
       }
     }

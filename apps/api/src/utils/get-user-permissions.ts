@@ -1,13 +1,13 @@
-import type { Role } from "@prisma/client";
-import { defineAbilityFor, userSchema } from "@saas/auth";
+import type { Role } from '@prisma/client'
+import { defineAbilityFor, userSchema } from '@saas/auth'
 
 export function getUserPermissions(userId: string, role: Role) {
   const authUser = userSchema.parse({
     id: userId,
-    role: role,
-  });
+    role,
+  })
 
-  const ability = defineAbilityFor(authUser);
+  const ability = defineAbilityFor(authUser)
 
-  return ability;
+  return ability
 }

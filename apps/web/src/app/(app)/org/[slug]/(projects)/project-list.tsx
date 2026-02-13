@@ -41,8 +41,8 @@ export async function ProjectList() {
                 <AvatarFallback />
               </Avatar>
 
-              <span className="truncate text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">
+              <span className="text-muted-foreground truncate text-xs">
+                <span className="text-foreground font-medium">
                   {project.owner.name}
                 </span>{' '}
                 {dayjs(project.createdAt).fromNow()}

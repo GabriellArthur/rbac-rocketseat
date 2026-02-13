@@ -1,12 +1,19 @@
-/** @typedef {import('eslint').Linter.Config} ESLintConfig */
-module.exports = {
-  extends: [
-    '@rocketseat/eslint-config/react',
-  ],
-  plugins: [
-    'simple-import-sort',
-  ],
-  rules: {
-    'simple-import-sort/imports': 'error',
-  }
-}
+const { FlatCompat } = require('@eslint/eslintrc')
+const simpleImportSort = require('eslint-plugin-simple-import-sort')
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+})
+
+/** @type {import('eslint').Linter.FlatConfig[]} */
+module.exports = [
+  ...compat.extends('@rocketseat/eslint-config/react'),
+  {
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
+    rules: {
+      'simple-import-sort/imports': 'error',
+    },
+  },
+]

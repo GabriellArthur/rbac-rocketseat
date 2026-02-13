@@ -1,9 +1,10 @@
 'use server'
 
-import { getCurrentOrg } from '@/auth/auth'
-import { createProject } from '@/http/create-project'
 import { HTTPError } from 'ky'
 import { z } from 'zod'
+
+import { getCurrentOrg } from '@/auth/auth'
+import { createProject } from '@/http/create-project'
 
 const projectSchema = z.object({
   name: z.string().min(4, { message: 'Please include at least 4 characters.' }),
@@ -47,7 +48,7 @@ export async function createProjectAction(data: FormData) {
 
       return {
         success: false,
-        message: message,
+        message,
         errors: null,
       }
     }

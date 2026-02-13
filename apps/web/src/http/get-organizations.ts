@@ -1,21 +1,20 @@
-import { api } from './api-client';
+import { api } from './api-client'
 
 interface GetOrganizationsResponse {
   organizations: {
-    id: string;
-    name: string;
-    slug: string;
-    avatarUrl: string;
+    id: string
+    name: string
+    slug: string
+    avatarUrl: string
   }[]
 }
-
 
 export async function getOrganizations() {
   const result = await api
     .get('organizations', {
       next: {
         tags: ['organizations'],
-      }
+      },
     })
     .json<GetOrganizationsResponse>()
 

@@ -1,15 +1,15 @@
-import type { Roles } from '@saas/auth';
-import { api } from './api-client';
+import type { Roles } from '@saas/auth'
+
+import { api } from './api-client'
 
 interface GetMembershipResponse {
   membership: {
-    id: string;
-    role: Roles,
-    organizationId: string;
-    userId: string;
+    id: string
+    role: Roles
+    organizationId: string
+    userId: string
   }
 }
-
 
 export async function getMembership(slug: string) {
   const result = await api

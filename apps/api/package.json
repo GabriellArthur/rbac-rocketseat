@@ -9,7 +9,10 @@
     "db:studio": "bun env:load prisma studio",
     "env:load": "dotenv -e ../../packages/env/.env --",
     "build": "tsup",
-    "start": "node dist/http/server.js"
+    "start": "node dist/http/server.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
@@ -35,15 +38,11 @@
     "dotenv-cli": "^11.0.0",
     "prisma": "5.12.1",
     "tsup": "^8.5.1",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "eslint": "^8.56.0"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
-  "prettier": "@saas/prettier",
-  "eslintConfig": {
-    "extends": [
-      "@saas/eslint-config/node"
-    ]
-  }
+  "prettier": "@saas/prettier"
 }

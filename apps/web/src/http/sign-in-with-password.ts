@@ -1,5 +1,6 @@
-import { HTTPError } from 'ky';
-import { api } from './api-client';
+import { HTTPError } from 'ky'
+
+import { api } from './api-client'
 
 interface SignInWithPasswordRequest {
   email: string
@@ -12,8 +13,8 @@ interface SignInWithPasswordResponse {
 
 export class SignInWithPasswordError extends Error {
   constructor(message?: string) {
-    super(message ?? 'Sign in with password failed');
-    this.name = 'SignInWithPasswordError';
+    super(message ?? 'Sign in with password failed')
+    this.name = 'SignInWithPasswordError'
   }
 }
 
@@ -23,12 +24,12 @@ export async function signInWithPassword({
 }: SignInWithPasswordRequest) {
   try {
     const result = await api
-    .post('sessions/password', {
-      json: {
-        email,
-        password,
-      },
-    })
+      .post('sessions/password', {
+        json: {
+          email,
+          password,
+        },
+      })
       .json<SignInWithPasswordResponse>()
 
     return result
@@ -38,6 +39,8 @@ export async function signInWithPassword({
       throw new SignInWithPasswordError(message)
     }
 
-    throw new SignInWithPasswordError('Unexpected error, try again in a few minutes.')
+    throw new SignInWithPasswordError(
+      'Unexpected error, try again in a few minutes.',
+    )
   }
 }

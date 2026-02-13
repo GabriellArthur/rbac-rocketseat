@@ -6,10 +6,10 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { Check, UserPlus2, X } from 'lucide-react'
 import { useState } from 'react'
 
+import { getPendingInvites } from '@/http/get-pending-invites'
 
 import { Button } from '../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { getPendingInvites } from '@/http/get-pending-invites'
 import { acceptInviteAction, rejectInviteAction } from './actions'
 
 dayjs.extend(relativeTime)
@@ -51,18 +51,18 @@ export function PendingInvites() {
         </span>
 
         {data?.invites.length === 0 && (
-          <p className="text-sm text-muted-foreground">No invites found.</p>
+          <p className="text-muted-foreground text-sm">No invites found.</p>
         )}
 
         {data?.invites.map((invite) => {
           return (
             <div key={invite.id} className="space-y-2">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                <span className="font-medium text-foreground">
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                <span className="text-foreground font-medium">
                   {invite.author?.name ?? 'Someone'}
                 </span>{' '}
                 invited you to join{' '}
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {invite.organization.name}
                 </span>{' '}
                 <span>{dayjs(invite.createdAt).fromNow()}</span>

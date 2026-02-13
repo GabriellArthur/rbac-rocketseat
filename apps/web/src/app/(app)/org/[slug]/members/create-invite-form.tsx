@@ -12,8 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
 import { useFormState } from '@/hooks/use-form-state'
+
 import { createInviteAction } from './actions'
 
 export function CreateInviteForm() {

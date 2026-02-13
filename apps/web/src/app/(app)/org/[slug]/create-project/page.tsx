@@ -1,5 +1,7 @@
-import { ability } from '@/auth/auth'
 import { redirect } from 'next/navigation'
+
+import { ability } from '@/auth/auth'
+
 import ProjectForm from './project-form'
 
 export default async function CreateProject() {
